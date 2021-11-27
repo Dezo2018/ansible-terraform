@@ -1,0 +1,25 @@
+- hosts: dev
+  name: Copies terraform configs to remotes, plans and applies terraform
+  vars:
+    plan_only: yes
+    state: present
+  become: true
+  tasks:
+    - name: Copy terraform dir to remotes
+      copy:
+        dest: ~/terraform/
+        src: terraform/
+
+    - name: Run Terraform Task
+      check_mode: "{{ plan_only }}" # can pass via env yes | no
+      register: terraform
+      community.general.terraform:
+        project_path: "~/terraform/"
+        state: "{{ state }}"
+        variables: "{{ terraform_tvars | default(omit) }}"
+        variables_files: "{{ terraform_tvars_files | default(omit) }}"
+        backend_config_files: "{{ backend_config_files | default(omit) }}"
+        force_init: true
+
+    - name: View Output
+      debug: var=terraform.stdout_lines

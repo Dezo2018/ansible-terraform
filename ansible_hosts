@@ -1,0 +1,7 @@
+[dev]
+# host 1
+# host 2
+
+[dev:vars]
+ansible_user=ubuntu
+ansible_connection=ssh

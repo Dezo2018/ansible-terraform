@@ -1,21 +1,11 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = ">=3.66.0"
-    }
-  }
-}
-
 provider "aws" {
-  region                  = "us-east-1"
-  profile                 = "ansible-terraform"
+  region                  = var.aws_region
+  profile                 = var.aws_creds_profile
   shared_credentials_file = "~/.aws/credentials"
 }
 
 locals {
-  instance_type = "t2.micro"
-  key_name      = "ec2-terra-ansi"
+  key_name = "ec2-terra-ansi"
 }
 
 resource "tls_private_key" "ec2_private_key" {
@@ -41,7 +31,7 @@ resource "aws_key_pair" "ec2_keys" {
 
 resource "aws_instance" "jenkins" {
   ami           = data.aws_ami.ubuntu.id
-  instance_type = local.instance_type
+  instance_type = var.aws_ec2_instance_type
   key_name      = aws_key_pair.ec2_keys.key_name
 
   tags = {
@@ -68,10 +58,11 @@ EOF
 resource "aws_instance" "targets" {
   count         = 2
   ami           = data.aws_ami.ubuntu.id
-  instance_type = local.instance_type
+  instance_type = var.aws_ec2_instance_type
   key_name      = aws_key_pair.ec2_keys.key_name
 
   tags = {
-    Name = "target-server ${count.index}"
+    Name = "target-server-${count.index}--${count.index % 2 == 0 ? "prod" : "dev"}"
   }
 }
+

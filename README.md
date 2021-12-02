@@ -8,6 +8,9 @@ It provides surport for deploying to multiple environments, based on parameters 
 
 - AWS account with credentials stored in `./aws/credentials`. Pass in a profile via the `aws_creds_profile` terraform var, defaults to `ansible-terraform`.
 - This account must contain all defualt VPC configurations like defualt security group, subnets etc. Pass in the region in as `aws_region` terraform var.
+- Terraform to deploy base infrastructure
+- Anisble for installing docker and other needed tools within the target servers.
+
 
 ## Steps to Setup Environments
 
@@ -36,7 +39,7 @@ It provides surport for deploying to multiple environments, based on parameters 
    1. Run the following to install requires on target instances
 
       ```bash
-      ansible-playbook -i ansible_hosts ansible-pre.yml
+      ansible-playbook -i ansible_hosts ansible-pre.yml --key-file ec2-terra-ansi.pem
       ```
 
 1. Configure Jenkins server
@@ -51,8 +54,10 @@ It provides surport for deploying to multiple environments, based on parameters 
       1. Path: `/usr/bin`
    1. Add the private keys to the target instances, which ansible will use to connect in jenkins credentials
       1. Use the content of the `ec2-terra-ansi.pem` created while deploying infrastructure
+      1. username should be `ubuntu`
       1. The Id of the credentials should be `ubuntu-ssh`
    1. Add a multibranch project to this repository
+      1. Make sure o ad a branch pointing to this repository
 
 ## Deploying Terraform to Target Servers
 

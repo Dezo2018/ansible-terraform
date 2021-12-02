@@ -2,7 +2,7 @@
 
 A demo project for deploying terraform to instances using ansible terraform module
 
-It provides surport for deploying to multiple environments, based on parameters passed into jenkins.
+It supports deploying to multiple environments, based on parameters passed in through jenkins.
 
 ## Background
 We wish to apply terraform configurations to a bunch of remote instances using ansible. This is required to be handle continuously using the Jenkins CI platform. 
@@ -44,6 +44,7 @@ We wish to apply terraform configurations to a bunch of remote instances using a
 
    1. Fetch Ips of the targets from aws console
    1. Place them in the `ansible_hosts` file, those terminating with `dev` under the `dev` host group and the `prod` in prod host group
+   1. Push your changes to the repository
 
 1. Configure Jenkins server
 
@@ -61,9 +62,7 @@ We wish to apply terraform configurations to a bunch of remote instances using a
       1. username should be `ubuntu`
       1. The Id of the credentials should be `ubuntu-ssh`
    1. Add a multibranch project to this repository
-      1. Make sure o ad a branch pointing to this repository
-
-1. Push your changes to the repository
+      1. Make sure to add a branch source pointing to this repository
 
 ## Deploying Terraform to Target Servers
 
@@ -71,9 +70,9 @@ This repository after configuration will automatically carry out the changes in 
 
 Basically just pushing changes to this repository should redeploy your terraform code. It will pause after a plan and you can acknowledge to continue or stop.
 
-The `terraform` and `live` dir are copied to the remotes before execution, so you can use it to place backend_config_files, variable_files for later referencing.
+The `terraform` and `live` dir are copied to the remotes before execution, so you can use it to place backend_config_files, terraform_tvars_files for later referencing.
 
-The stages included in the Jenkins pipeline include;
+The stages included in the Jenkins pipeline are;
 
 1. test - Will carry out terraform validate on your configutions
 1. pre - run an ansible prepare playbook to deploy to the target instances terraform dependencies
@@ -89,7 +88,8 @@ The stages included in the Jenkins pipeline include;
 - You can also pass in a location to the variables file through `terraform_tvars_files`.
 
 Example
-Passing in `extra-vars` as `, "terraform_tvars": { "nginx_container_name": "nginx-changed" }` will change the nginx container name in the remote instances
+1. Passing in `extra-vars` as `, "terraform_tvars": { "nginx_container_name": "nginx-changed" }` will change the nginx container name in the remote instances.
+1. For the case with a .tvars file for any environment, run terraform with the following `extra-vars` parameter `, "terraform_tvars_files": "../relative/path/to.tvars" }`
 
 #### Deploying to Different Environments
 

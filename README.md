@@ -76,6 +76,7 @@ The `terraform` and `live` dir are copied to the remotes before execution, so yo
 The stages included in the Jenkins pipeline include;
 
 1. test - Will carry out terraform validate on your configutions
+1. pre - run an ansible prepare playbook to deploy to the target instances terraform dependencies
 1. plan - Will run a plan of your terraform configuration and print the output for validations. (Check the console output for full log)
 1. approval - Will pause the pipeline and wait for approval before continueing to execute the. You make choose to cancel.
 1. apply - If approved, will apply the change in the terraform

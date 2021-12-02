@@ -39,7 +39,13 @@ It provides surport for deploying to multiple environments, based on parameters 
    1. Run the following to install requires on target instances
 
       ```bash
-      ansible-playbook -i ansible_hosts ansible-pre.yml --key-file ec2-terra-ansi.pem
+      ansible-playbook -i ansible_hosts ansible-pre.yml --private-key ec2-terra-ansi.pem 
+      ```
+      You may encounter an issue running the above command. This may occur when working with multiple unverified sources. Add the 
+      following arguments to bypass host verifications.
+
+      ```bash
+      ansible-playbook -i ansible_hosts ansible-pre.yml --private-key ec2-terra-ansi.pem --ssh-common-args '-o StrictHostKeyChecking=no'
       ```
 
 1. Configure Jenkins server
@@ -47,6 +53,7 @@ It provides surport for deploying to multiple environments, based on parameters 
    1. Goto to aws console, get the connection command to ssh into jenkins-server
    1. Follow from https://www.digitalocean.com/community/tutorials/how-to-install-jenkins-on-ubuntu-20-04#step-4-%E2%80%94-setting-up-jenkins
    1. Configure a `Github Server` in `Configure System` (Use a Personal Access Token as credentials)
+      1. Follow from https://plugins.jenkins.io/github/
       1. Make sure to check `Manage Hooks`
    1. Install the ansible plugin at Jenkins
    1. Configure ansible at `Global Tools Config`

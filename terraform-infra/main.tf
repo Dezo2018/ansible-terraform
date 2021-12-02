@@ -53,8 +53,7 @@ sudo apt update
 sudo apt install default-jre terraform jenkins -y
 sudo systemctl start jenkins
 sudo apt install ansible -y
-sudo su jenkins
-ansible-galaxy collection install community.general
+sudo -H -u jenkins bash -c "ansible-galaxy collection install community.general"
 EOF
 }
 

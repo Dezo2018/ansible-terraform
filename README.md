@@ -88,8 +88,8 @@ The stages included in the Jenkins pipeline are;
 - You can also pass in a location to the variables file through `terraform_tvars_files`.
 
 Example
-1. Passing in `extra-vars` as `, "terraform_tvars": { "nginx_container_name": "nginx-changed" }` will change the nginx container name in the remote instances.
-1. For the case with a .tvars file for any environment, run terraform with the following `extra-vars` parameter `, "terraform_tvars_files": "../relative/path/to.tvars" `
+1. Passing in `extra-vars` as `"terraform_tvars": { "nginx_container_name": "nginx-changed" }` will change the nginx container name in the remote instances.
+1. For the case with a .tvars file for any environment, run terraform with the following `extra-vars` parameter `"terraform_tvars_files": "../relative/path/to.tvars" `
 
 #### Deploying to Different Environments
 
@@ -112,5 +112,5 @@ Deploying to different environments is virtually simple.
 To destroy existing state, run the the pipeline with the following parameters extra_vars
 
 ```
-, "state": "absent"
+"state": "absent"
 ```

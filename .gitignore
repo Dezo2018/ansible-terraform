@@ -8,5 +8,5 @@
 # .hcl lock files
 **/.terraform.lock.hcl
 
-# don't commit the private key 
-ec2-terra-ansi.pem
+# don't commit the private keys
+*.pem

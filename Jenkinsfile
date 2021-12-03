@@ -27,7 +27,7 @@ pipeline {
 
     stage('plan') {
       steps {
-        ansiblePlaybook colorized: true, credentialsId: 'ubuntu-ssh', disableHostKeyChecking: true, installation: 'ansible', inventory: 'ansible_hosts', limit: "${params.env}", playbook: 'ansible.yml', extras: "${params.plan_extras} --extra-vars '{\"env\": ${params.env}, \"plan_only\":\"yes\" ${params.extra_vars}}' "
+        ansiblePlaybook colorized: true, credentialsId: 'ubuntu-ssh', disableHostKeyChecking: true, installation: 'ansible', inventory: 'ansible_hosts', limit: "${params.env}", playbook: 'ansible.yml', extras: "${params.plan_extras} --extra-vars '{\"env\": ${params.env}, \"plan_only\":\"yes\", \"terraform_tvars_files\": \"./terrform.tfvars\" ${params.extra_vars}}' "
       }
     }
 
@@ -41,7 +41,7 @@ pipeline {
 
     stage('apply') {
       steps {
-         ansiblePlaybook colorized: true, credentialsId: 'ubuntu-ssh', disableHostKeyChecking: true, installation: 'ansible', inventory: 'ansible_hosts', limit: "${params.env}", playbook: 'ansible.yml', extras: "${params.apply_extras} --extra-vars '{\"env\": ${params.env}, \"plan_only\":\"no\" ${params.extra_vars}}' "
+         ansiblePlaybook colorized: true, credentialsId: 'ubuntu-ssh', disableHostKeyChecking: true, installation: 'ansible', inventory: 'ansible_hosts', limit: "${params.env}", playbook: 'ansible.yml', extras: "${params.apply_extras} --extra-vars '{\"env\": ${params.env}, \"plan_only\":\"no\", \"terraform_tvars_files\": \"./terrform.tfvars\" ${params.extra_vars}}' "
       }
     }
   }
